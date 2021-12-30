@@ -1,10 +1,13 @@
 package com.pluralsight.myapp;
 
 import com.pluralsight.calcengine.CalculateHelper;
+import com.pluralsight.calcengine.DynamicHelper;
 import com.pluralsight.calcengine.InvalidStatementException;
 import com.pluralsight.calcengine.MathEquation;
 import com.pluralsight.calcengine.CalculateBase;
 import com.pluralsight.calcengine.Adder;
+import com.pluralsight.calcengine.MathProcessing;
+import com.pluralsight.calcengine.PowerOf;
 import com.pluralsight.calcengine.Subtracter;
 import com.pluralsight.calcengine.Multiplier;
 import com.pluralsight.calcengine.Divider;
@@ -14,7 +17,26 @@ public class Main {
     public static void main(String[] args) {
 //        useMathEquation();
 //        useCalculatorBase();
+//        useCalculateHelper();
 
+        String[] statements = {
+                "add 25.0 92.0",       // 25.0 + 92.0 = 117.0
+                "power 5.0 2.0"
+        };
+
+        DynamicHelper helper = new DynamicHelper(new MathProcessing[]{
+                new Adder(),
+                new PowerOf()
+        });
+        for(String statement:statements) {
+            String output = helper.process(statement);
+            System.out.println(output);
+
+        }
+
+    }
+
+    static void useCalculateHelper() {
         String[] statements = {
                 "add 1.0",             // Error: incorrect number of values
                 "add xx 25.0",         // Error: non-numeric data
@@ -33,14 +55,9 @@ public class Main {
             } catch(InvalidStatementException e) {
                 System.out.println(e.getMessage());
                 if(e.getCause() != null)
-                    System.out.println(" Original exception: " + e.getCause().getMessage());
-
-
-
+                    System.out.println("  Original exception: " + e.getCause().getMessage());
             }
         }
-
-
     }
 
     static void useMathEquation() {
@@ -98,5 +115,7 @@ public class Main {
             System.out.println(calculator.getResult());
         }
     }
-
 }
+
+
+
